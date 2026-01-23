@@ -1,259 +1,281 @@
-document.addEventListener('DOMContentLoaded', () => {
-    'use strict';
+// DOM Elements
+const accountBtn = document.getElementById('accountBtn');
+const accountText = document.querySelector('.account-text');
+const authSection = document.getElementById('auth-section');
+const logoutBtn = document.getElementById('logoutBtn');
+const dropdownItems = document.querySelectorAll('.dropdown-item');
+const userPanels = document.querySelectorAll('.user-panel');
+const panelBacks = document.querySelectorAll('.panel-back');
 
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .smart-badge::after { 
-            animation: none !important; 
-            background: conic-gradient(from var(--angle), transparent 50%, rgba(255, 255, 255, 0.8) 85%, #ffffff 95%, transparent 100%);
-        }
-    `;
-    document.head.appendChild(style);
+// Progress Scroll
+const progressScroll = document.querySelector('.progress-scroll');
 
-    const CONFIG = {
-        proximity: 300, magneticForce: 0.4, smoothness: 0.1, 
-        angleSmoothness: 0.1, tiltStrength: 15, scaleOnHover: 1.02, rotationSpeed: 0.2 
-    };
+// Update progress scroll
+function updateProgressScroll() {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight - windowHeight;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const progress = (scrollTop / documentHeight) * 100;
+    progressScroll.style.width = progress + '%';
+}
 
-    let mouseX = 0, mouseY = 0;
-    let isMobile = window.innerWidth <= 768;
+// Initialize dropdown state
+function initializeDropdown() {
+    const accountDropdown = document.querySelector('.account-dropdown');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+    if (dropdownMenu) {
+        dropdownMenu.style.opacity = '0';
+        dropdownMenu.style.visibility = 'hidden';
+    }
+}
 
-    window.addEventListener('resize', () => {
-        isMobile = window.innerWidth <= 768;
-        if(isMobile) document.querySelectorAll('.smart-badge').forEach(el => el.style.transform = '');
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    const initRotator = (containerId, intervalTime = 3000, initialDelay = 0) => {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        const items = container.children;
-        if (items.length === 0) return;
-
-        let currentIndex = 0;
-
-        setTimeout(() => {
-            setInterval(() => {
-                const currentItem = items[currentIndex];
-                const nextIndex = (currentIndex + 1) % items.length;
-                const nextItem = items[nextIndex];
-
-                currentItem.classList.remove('active');
-                currentItem.classList.add('exit');
-
-                nextItem.classList.remove('exit');
-                void nextItem.offsetWidth;
-                nextItem.classList.add('active');
-
-                setTimeout(() => {
-                    currentItem.classList.remove('exit');
-                }, 800);
-
-                currentIndex = nextIndex;
-            }, intervalTime);
-        }, initialDelay);
-    };
-
-    initRotator('main-rotator', 3000, 0);
-    initRotator('subtitle-rotator', 3500, 500);
-
-    const initSocialSlider = () => {
-        const track = document.querySelector('.social-track');
-        if(!track) return;
-        const moveDistance = track.scrollWidth / 2;
-        const animation = gsap.to(track, {
-            x: -(moveDistance), duration: 15, ease: "none", repeat: -1
-        });
-        const container = document.querySelector('.social-slider-container');
-        container.addEventListener('mouseenter', () => gsap.to(animation, { timeScale: 0, duration: 0.5, ease: "power1.out" }));
-        container.addEventListener('mouseleave', () => gsap.to(animation, { timeScale: 1, duration: 0.8, ease: "power1.in" }));
-    };
-    window.addEventListener('load', initSocialSlider);
-
-    class LiquidReveal {
-        constructor() {
-            this.canvas = document.getElementById('reveal-canvas');
-            this.wrapper = document.querySelector('.bg-reveal-wrapper');
-            this.isMobile = window.innerWidth <= 768;
-            if (!this.canvas || this.isMobile) return;
-
-            this.ctx = this.canvas.getContext('2d', { willReadFrequently: false });
-            this.bgImage = new Image();
-            this.bgImage.crossOrigin = "Anonymous";
-            this.bgImage.src = 'https://andzcr.github.io/resources/photos/effect.png';
-
-            this.points = [];
-            this.maxAge = 120;
-            this.radius = 160;
-            this.lastX = 0; this.lastY = 0;
-            this.init();
-        }
-
-        init() {
-            this.resize();
-            window.addEventListener('resize', () => {
-                this.resize();
-                this.isMobile = window.innerWidth <= 768;
-                this.canvas.style.display = this.isMobile ? 'none' : 'block';
-            });
-            this.bgImage.onload = () => {
-                this.canvas.classList.add('ready');
-                this.animate();
-            };
-        }
-
-        resize() {
-            if(!this.wrapper) return;
-            const rect = this.wrapper.getBoundingClientRect();
-            this.width = rect.width + 2;
-            this.height = rect.height + 2;
-            this.canvas.width = this.width;
-            this.canvas.height = this.height;
-            this.offsetX = rect.left - 1;
-            this.offsetY = rect.top - 1;
-        }
-
-        addPoint(x, y) {
-            const relX = x - this.offsetX;
-            const relY = y - this.offsetY;
-            if(this.lastX === 0) { this.lastX = relX; this.lastY = relY; }
-            const dist = Math.hypot(relX - this.lastX, relY - this.lastY);
-            const steps = Math.min(Math.ceil(dist / 20), 10); 
-            for (let i = 0; i < steps; i++) {
-                const interactX = this.lastX + (relX - this.lastX) * (i / steps);
-                const interactY = this.lastY + (relY - this.lastY) * (i / steps);
-                this.points.push({
-                    x: interactX, y: interactY, age: this.maxAge,
-                    currentRadius: this.radius + Math.min(dist * 0.5, 30)
-                });
-            }
-            this.lastX = relX; this.lastY = relY;
-        }
-
-        animate() {
-            if (this.isMobile) return;
-            if(this.wrapper) {
-                const rect = this.wrapper.getBoundingClientRect();
-                this.offsetX = rect.left - 1;
-                this.offsetY = rect.top - 1;
-            }
-            this.ctx.clearRect(0, 0, this.width, this.height);
-            if (mouseX !== 0 && mouseY !== 0) this.addPoint(mouseX, mouseY);
-
-            this.points.forEach((point, i) => {
-                point.age--;
-                if (point.age <= 0) {
-                    this.points.splice(i, 1);
-                } else {
-                    const intensity = point.age / this.maxAge;
-                    const grad = this.ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, point.currentRadius);
-                    grad.addColorStop(0, `rgba(255, 255, 255, ${intensity})`);
-                    grad.addColorStop(0.5, `rgba(255, 255, 255, ${intensity * 0.8})`);
-                    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                    this.ctx.fillStyle = grad;
-                    this.ctx.beginPath();
-                    this.ctx.arc(point.x, point.y, point.currentRadius, 0, Math.PI * 2);
-                    this.ctx.fill();
-                }
-            });
-
-            this.ctx.globalCompositeOperation = 'source-in';
-            const imgRatio = this.bgImage.width / this.bgImage.height;
-            const canvasRatio = this.width / this.height;
-            let renderW, renderH, drawX, drawY;
-
-            if (canvasRatio > imgRatio) {
-                renderW = this.width; renderH = this.width / imgRatio;
-                drawX = 0; drawY = (this.height - renderH) / 2;
-            } else {
-                renderH = this.height; renderW = this.height * imgRatio;
-                drawX = (this.width - renderW) / 2; drawY = 0;
-            }
-            this.ctx.drawImage(this.bgImage, drawX, drawY, renderW, renderH);
-            this.ctx.globalCompositeOperation = 'source-over';
-            requestAnimationFrame(() => this.animate());
+// Show specific panel
+function showPanel(panelName) {
+    userPanels.forEach(panel => panel.classList.remove('active'));
+    const targetPanel = document.getElementById(panelName + 'Panel');
+    if (targetPanel) {
+        targetPanel.classList.add('active');
+        
+        // Load favorites when account panel is opened
+        if (panelName === 'account' && window.loadUserFavorites) {
+            window.loadUserFavorites();
         }
     }
-    const revealEffect = new LiquidReveal();
+}
 
-    class MagneticBadge {
-        constructor(el) {
-            this.el = el;
-            this.isRight = this.el.closest('.smart-badge-wrapper').classList.contains('right');
-            this.x = 0; this.y = 0; this.currentAngle = 0; this.isHovering = false;
-            
-            this.el.addEventListener('mouseenter', () => this.isHovering = true);
-            this.el.addEventListener('mouseleave', () => this.isHovering = false);
-            this.el.addEventListener('touchstart', () => { if(isMobile) this.el.style.transform = 'scale(0.96)'; }, {passive: true});
-            this.el.addEventListener('touchend', () => { if(isMobile) this.el.style.transform = ''; }, {passive: true});
-            this.animate();
-        }
-
-        lerp(start, end, factor) { return start + (end - start) * factor; }
-        lerpAngle(current, target, factor) {
-            let cur = current % 360, tar = target % 360;
-            if (cur < 0) cur += 360; if (tar < 0) tar += 360;
-            let diff = tar - cur;
-            if (diff > 180) diff -= 360; if (diff < -180) diff += 360;
-            return cur + diff * factor;
-        }
-
-        animate() {
-            const rect = this.el.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const distanceX = mouseX - centerX;
-            const distanceY = mouseY - centerY;
-            const dist = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-            const angleRad = Math.atan2(mouseY - centerY, mouseX - centerX);
-            let mouseAngleDeg = angleRad * (180 / Math.PI) + 90;
-            const time = Date.now() * CONFIG.rotationSpeed;
-            let idleAngleDeg = this.isRight ? (-time + 180) : time;
-            let targetAngle = (!isMobile && dist < CONFIG.proximity) ? mouseAngleDeg : idleAngleDeg;
-
-            this.currentAngle = this.lerpAngle(this.currentAngle, targetAngle, CONFIG.angleSmoothness);
-            this.el.style.setProperty('--angle', `${this.currentAngle}deg`);
-
-            if (!isMobile) {
-                let targetX = 0, targetY = 0, rotateX = 0, rotateY = 0;
-                if (dist < CONFIG.proximity) {
-                    const pull = (CONFIG.proximity - dist) / CONFIG.proximity;
-                    targetX = distanceX * CONFIG.magneticForce * pull;
-                    targetY = distanceY * CONFIG.magneticForce * pull;
-                    rotateY = (distanceX / (rect.width / 2)) * CONFIG.tiltStrength * pull;
-                    rotateX = -(distanceY / (rect.height / 2)) * CONFIG.tiltStrength * pull;
-                    const relX = mouseX - rect.left;
-                    const relY = mouseY - rect.top;
-                    this.el.style.setProperty('--x', `${relX}px`);
-                    this.el.style.setProperty('--y', `${relY}px`);
-                }
-                this.x = this.lerp(this.x, targetX, CONFIG.smoothness);
-                this.y = this.lerp(this.y, targetY, CONFIG.smoothness);
-                const currentRotateX = parseFloat(this.el.dataset.rotateX || 0);
-                const currentRotateY = parseFloat(this.el.dataset.rotateY || 0);
-                const newRotateX = this.lerp(currentRotateX, rotateX, CONFIG.smoothness);
-                const newRotateY = this.lerp(currentRotateY, rotateY, CONFIG.smoothness);
-                this.el.dataset.rotateX = newRotateX;
-                this.el.dataset.rotateY = newRotateY;
-                this.el.style.transform = `translate3d(${this.x}px, ${this.y}px, 0) perspective(1000px) rotateX(${newRotateX}deg) rotateY(${newRotateY}deg) scale(${this.isHovering ? CONFIG.scaleOnHover : 1})`;
-            }
-            requestAnimationFrame(() => this.animate());
-        }
+// Toggle auth section
+accountBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const accountDropdown = document.querySelector('.account-dropdown');
+    
+    if (!accountDropdown.classList.contains('logged-in')) {
+        authSection.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
-    const badges = document.querySelectorAll('.smart-badge');
-    badges.forEach(badgeEl => new MagneticBadge(badgeEl));
-
-    let lastScrollTop = 0;
-    const wrappers = document.querySelectorAll('.smart-badge-wrapper');
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollTop > lastScrollTop && scrollTop > 50) wrappers.forEach(w => w.classList.add('scroll-hide'));
-        else wrappers.forEach(w => w.classList.remove('scroll-hide'));
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    }, { passive: true });
 });
+
+// Dropdown functionality
+dropdownItems.forEach(item => {
+    if (item.id !== 'logoutBtn') {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const panel = item.getAttribute('data-panel');
+            showPanel(panel);
+        });
+    }
+});
+
+// Back buttons
+panelBacks.forEach(backBtn => {
+    backBtn.addEventListener('click', () => {
+        userPanels.forEach(panel => panel.classList.remove('active'));
+    });
+});
+
+// Logout functionality
+logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    if (dropdownMenu) {
+        dropdownMenu.style.opacity = '0';
+        dropdownMenu.style.visibility = 'hidden';
+    }
+    
+    const logoutMessage = document.createElement('div');
+    logoutMessage.className = 'logout-message';
+    logoutMessage.innerHTML = `
+        <div class="logout-content">
+            <div class="logout-heart">
+                <svg viewBox="0 0 24 24" width="48" height="48">
+                    <path fill="#ddc9d1" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+            <h3>Until we meet again</h3>
+            <p>You have been successfully logged out.<br>We can't wait to see you back at CORELLE.</p>
+            <button class="logout-ok-btn">Continue Browsing</button>
+        </div>
+    `;
+    
+    document.body.appendChild(logoutMessage);
+    
+    setTimeout(() => {
+        logoutMessage.classList.add('show');
+    }, 10);
+    
+    // Use the global auth instance
+    window.auth.signOut().then(() => {
+        console.log('User signed out successfully');
+    }).catch((error) => {
+        console.error('Logout failed:', error);
+        if (logoutMessage.parentNode) {
+            logoutMessage.remove();
+        }
+    });
+    
+    const okBtn = logoutMessage.querySelector('.logout-ok-btn');
+    okBtn.addEventListener('click', () => {
+        logoutMessage.classList.remove('show');
+        setTimeout(() => {
+            if (logoutMessage.parentNode) {
+                logoutMessage.remove();
+            }
+        }, 300);
+    });
+});
+
+// Close panels when clicking outside
+document.addEventListener('click', (e) => {
+    const accountDropdown = document.querySelector('.account-dropdown');
+    
+    if (!e.target.closest('.account-dropdown') && !e.target.closest('.user-panel')) {
+        if (accountDropdown.classList.contains('logged-in')) {
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            if (dropdownMenu) {
+                dropdownMenu.style.opacity = '0';
+                dropdownMenu.style.visibility = 'hidden';
+            }
+        }
+    }
+});
+
+// Add escape key to close
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        // Close auth section
+        if (authSection.classList.contains('active')) {
+            authSection.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            return;
+        }
+        
+        // Close user panels
+        let panelClosed = false;
+        userPanels.forEach(panel => {
+            if (panel.classList.contains('active')) {
+                panel.classList.remove('active');
+                panelClosed = true;
+            }
+        });
+        
+        // If a panel was closed, don't close dropdown
+        if (panelClosed) return;
+        
+        // Close dropdown only if no panels were closed
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        if (dropdownMenu) {
+            dropdownMenu.style.opacity = '0';
+            dropdownMenu.style.visibility = 'hidden';
+        }
+        
+        // Close any open notifications
+        const notifications = document.querySelectorAll('.welcome-notification, .error-message, .logout-message, .verification-notification');
+        notifications.forEach(notification => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 300);
+        });
+    }
+});
+
+// Theme selector functionality
+document.querySelectorAll('.theme-option').forEach(option => {
+    option.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+    });
+});
+
+// Prevent dropdown from closing when clicking inside it
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.dropdown-menu')) {
+        e.stopPropagation();
+    }
+});
+
+// Handle dropdown hover for logged-in users
+let dropdownTimeout;
+document.addEventListener('mouseover', function(e) {
+    const accountDropdown = document.querySelector('.account-dropdown');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+    if (accountDropdown.classList.contains('logged-in') && 
+        e.target.closest('.account-dropdown')) {
+        clearTimeout(dropdownTimeout);
+        if (dropdownMenu) {
+            dropdownMenu.style.opacity = '1';
+            dropdownMenu.style.visibility = 'visible';
+            dropdownMenu.style.transform = 'translateY(5px)';
+        }
+    }
+});
+
+// Handle dropdown mouse leave
+document.addEventListener('mouseout', function(e) {
+    const accountDropdown = document.querySelector('.account-dropdown');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+    if (accountDropdown.classList.contains('logged-in') && 
+        (!e.relatedTarget || !e.relatedTarget.closest('.account-dropdown'))) {
+        dropdownTimeout = setTimeout(() => {
+            if (dropdownMenu) {
+                dropdownMenu.style.opacity = '0';
+                dropdownMenu.style.visibility = 'hidden';
+                dropdownMenu.style.transform = 'translateY(-10px)';
+            }
+        }, 300);
+    }
+});
+
+// Video loading optimization
+const bgVideo = document.getElementById('bg-video');
+if (bgVideo) {
+    bgVideo.addEventListener('loadeddata', function() {
+        console.log('Background video loaded successfully');
+    });
+    
+    bgVideo.addEventListener('error', function() {
+        console.log('Background video failed to load, using fallback');
+    });
+}
+
+// Scroll event listener for progress bar
+window.addEventListener('scroll', updateProgressScroll);
+window.addEventListener('resize', updateProgressScroll);
+
+// Initialize app
+document.addEventListener('DOMContentLoaded', function() {
+    initializeDropdown();
+    updateProgressScroll();
+    
+    // Mobile touch optimization
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+    }
+    
+    console.log('CORELLE home system initialized');
+});
+
+// Performance optimization: Debounce scroll events
+let scrollTimeout;
+window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(updateProgressScroll, 10);
+});
+
+// Responsive video handling
+function handleVideoResponsive() {
+    if (window.innerWidth < 768) {
+        bgVideo?.setAttribute('playsinline', '');
+        bgVideo?.setAttribute('muted', '');
+        bgVideo?.setAttribute('autoplay', '');
+    }
+}
+
+window.addEventListener('resize', handleVideoResponsive);
+handleVideoResponsive();
