@@ -368,19 +368,42 @@
                                         <label class="cat-option">
                                             <input type="radio" name="category" value="web" checked>
                                             <div class="cat-card">
-                                                <span>Web Development</span>
+                                                <div class="cat-icon">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                                                </div>
+                                                <div class="cat-info">
+                                                    <span class="cat-title">Web Dev</span>
+                                                    <span class="cat-sub">Engineering</span>
+                                                </div>
+                                                <div class="cat-indicator"></div>
                                             </div>
                                         </label>
+
                                         <label class="cat-option">
                                             <input type="radio" name="category" value="brand">
                                             <div class="cat-card">
-                                                <span>Brand Design</span>
+                                                <div class="cat-icon">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                                                </div>
+                                                <div class="cat-info">
+                                                    <span class="cat-title">Branding</span>
+                                                    <span class="cat-sub">Identity</span>
+                                                </div>
+                                                <div class="cat-indicator"></div>
                                             </div>
                                         </label>
+
                                         <label class="cat-option">
                                             <input type="radio" name="category" value="other">
                                             <div class="cat-card">
-                                                <span>Other</span>
+                                                <div class="cat-icon">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                                </div>
+                                                <div class="cat-info">
+                                                    <span class="cat-title">Other</span>
+                                                    <span class="cat-sub">Inquiry</span>
+                                                </div>
+                                                <div class="cat-indicator"></div>
                                             </div>
                                         </label>
                                     </div>
@@ -389,6 +412,14 @@
                                 <div class="input-group mt-2">
                                     <label>Tell us about your project</label>
                                     <textarea id="contact-message" placeholder="Describe your vision, goals, or current challenges..." class="contact-textarea" required></textarea>
+                                </div>
+
+                                <div class="round-check-group mt-2">
+                                    <label class="round-checkbox-container">
+                                        <input type="checkbox" id="gdpr-consent" required>
+                                        <span class="checkmark-circle"></span>
+                                    </label>
+                                    <span class="gdpr-label">I agree to the <span class="gdpr-link" onclick="openGDPR()">Terms of Service and Privacy Policy</span>.</span>
                                 </div>
 
                                 <button type="submit" class="submit-btn">
@@ -469,6 +500,46 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <div id="gdpr-modal" class="gdpr-overlay">
+        <div class="gdpr-card">
+            <div class="gdpr-header">
+                <h3>Politica de Confidențialitate & GDPR</h3>
+                <button onclick="closeGDPR()" class="gdpr-close"><ion-icon name="close-outline"></ion-icon></button>
+            </div>
+            <div class="gdpr-content">
+                <p><strong>1. Informații Generale</strong></p>
+                <p>Confidențialitatea datelor dumneavoastră cu caracter personal este o preocupare principală pentru noi, <strong>ANDZ Studio</strong>, în calitate de operator de date. Acest document are rolul de a vă informa cu privire la prelucrarea datelor dumneavoastră cu caracter personal.</p>
+                <br>
+                <p><strong>2. Categoriile de Date Prelucrate</strong></p>
+                <p>Datele personale pe care le colectăm și prelucrăm includ:</p>
+                <ul style="list-style: disc; margin-left: 20px; color: #aaa;">
+                    <li>Nume și Prenume</li>
+                    <li>Adresa de e-mail</li>
+                    <li>Numărul de telefon</li>
+                    <li>Informațiile furnizate în mesajul dumneavoastră sau în recenzii</li>
+                </ul>
+                <br>
+                <p><strong>3. Scopurile și Temeiurile Prelucrării</strong></p>
+                <p>Prelucrăm datele dumneavoastră strict pentru următoarele scopuri:</p>
+                <ul style="list-style: disc; margin-left: 20px; color: #aaa;">
+                    <li>Pentru a răspunde solicitărilor dumneavoastră transmise prin formularul de contact (rezolvarea problemei/proiectului).</li>
+                    <li>Pentru a vă oferi serviciile solicitate (Web Development, Branding).</li>
+                    <li>Pentru afișarea recenziilor (doar cu acordul dumneavoastră explicit).</li>
+                </ul>
+                <p>Nu colectăm și nu prelucrăm datele dumneavoastră în interes personal, pentru marketing nesolicitat sau pentru a crea profiluri de consumator fără acordul dumneavoastră.</p>
+                <br>
+                <p><strong>4. Durata Stocării Datelor</strong></p>
+                <p>Datele dumneavoastră vor fi stocate doar pe perioada necesară îndeplinirii scopurilor menționate mai sus sau conform obligațiilor legale.</p>
+                <br>
+                <p><strong>5. Drepturile Dumneavoastră</strong></p>
+                <p>Conform GDPR, beneficiați de dreptul de acces, dreptul la rectificare, dreptul la ștergerea datelor ("dreptul de a fi uitat"), dreptul la restricționarea prelucrării și dreptul la portabilitatea datelor.</p>
+                <br>
+                <p>Prin bifarea căsuței "I agree to the Terms of Service and Privacy Policy", confirmați că ați citit acest document și vă exprimați consimțământul pentru prelucrarea datelor în condițiile descrise.</p>
+            </div>
+            <button onclick="closeGDPR()" class="gdpr-understand-btn">Am înțeles</button>
+        </div>
     </div>
 
     <footer id="mega-footer" class="fixed bottom-0 left-0 w-full z-0 flex flex-col justify-end bg-neutral-950 overflow-hidden">
@@ -593,6 +664,7 @@
                                 <span class="apple-counter" id="char-counter">0/100</span>
                             </div>
                         </div>
+
                     </form>
                 </div>
 
@@ -612,6 +684,14 @@
                             <div id="pc-icon-box" class="pc-icon-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
                             <span id="pc-stars" class="pc-stars">★★★★★</span>
                         </div>
+                    </div>
+                    
+                    <div class="round-check-group mt-6" style="justify-content: center; opacity: 0.8;">
+                        <label class="round-checkbox-container">
+                            <input type="checkbox" id="review-gdpr-consent" required>
+                            <span class="checkmark-circle"></span>
+                        </label>
+                        <span class="gdpr-label text-xs text-gray-300">I agree to the <span class="gdpr-link" onclick="openGDPR()">Terms of Service and Privacy Policy</span>.</span>
                     </div>
                 </div>
             </div>

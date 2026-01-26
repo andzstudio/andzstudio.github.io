@@ -315,27 +315,13 @@ window.submitReviewToFirebase = async function(event) {
     const container = document.getElementById('notification-container');
 
     if (!currentReview.name || !currentReview.name.trim() || !currentReview.description || !currentReview.description.trim()) {
-        
-        const errorNotif = document.createElement('div');
-        errorNotif.className = 'ios-notification error'; 
-        errorNotif.innerHTML = `
-            <img class="notif-icon" src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Icon">
-            <div class="notif-content">
-                <span class="notif-title">ANDZ Bot</span>
-                <span class="notif-msg">Please complete all fields!</span>
-            </div>
-            <div class="notif-error-icon">!</div>
-        `;
-        container.appendChild(errorNotif);
-        
-        gsap.fromTo(errorNotif, 
-            { y: 50, opacity: 0, scale: 0.9 }, 
-            { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.5)" }
-        );
-        setTimeout(() => {
-            gsap.to(errorNotif, { y: 20, opacity: 0, duration: 0.5, onComplete:()=>errorNotif.remove() });
-        }, 3000);
-        
+        showErrorNotification("Please complete all fields!");
+        return;
+    }
+
+    const gdprReviewCheck = document.getElementById('review-gdpr-consent');
+    if(gdprReviewCheck && !gdprReviewCheck.checked) {
+        showErrorNotification("Please agree to the Terms & Privacy Policy.");
         return;
     }
 
@@ -359,6 +345,7 @@ window.submitReviewToFirebase = async function(event) {
             description: currentReview.description,
             service: currentReview.service,
             rating: currentReview.rating,
+            gdprConsent: true, 
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -387,11 +374,34 @@ window.submitReviewToFirebase = async function(event) {
 
     } catch (error) {
         console.error("Error:", error);
-        alert("Error submitting.");
+        showErrorNotification("Error submitting review.");
     } finally {
         if(btn) { 
             btn.innerHTML = originalContent; 
             btn.style.pointerEvents = 'all'; 
         }
     }
+}
+
+function showErrorNotification(msg) {
+    const container = document.getElementById('notification-container');
+    const errorNotif = document.createElement('div');
+    errorNotif.className = 'ios-notification error'; 
+    errorNotif.innerHTML = `
+        <img class="notif-icon" src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Icon">
+        <div class="notif-content">
+            <span class="notif-title">ANDZ Bot</span>
+            <span class="notif-msg">${msg}</span>
+        </div>
+        <div class="notif-error-icon">!</div>
+    `;
+    container.appendChild(errorNotif);
+    
+    gsap.fromTo(errorNotif, 
+        { y: 50, opacity: 0, scale: 0.9 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.5)" }
+    );
+    setTimeout(() => {
+        gsap.to(errorNotif, { y: 20, opacity: 0, duration: 0.5, onComplete:()=>errorNotif.remove() });
+    }, 3000);
 }

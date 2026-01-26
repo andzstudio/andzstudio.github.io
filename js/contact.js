@@ -61,9 +61,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+window.openGDPR = function() {
+    const modal = document.getElementById('gdpr-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.classList.add('modal-open');
+    }
+}
+
+window.closeGDPR = function() {
+    const modal = document.getElementById('gdpr-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+    }
+}
+
+function showContactNotification(message, type = 'error') {
+    const container = document.getElementById('notification-container');
+    if (!container) return;
+
+    const notif = document.createElement('div');
+    notif.className = `ios-notification ${type}`; 
+    
+    const iconHtml = type === 'success' 
+        ? '<div class="notif-check">✓</div>' 
+        : '<div class="notif-error-icon">!</div>';
+
+    notif.innerHTML = `
+        <img class="notif-icon" src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Icon">
+        <div class="notif-content">
+            <span class="notif-title">ANDZ Bot</span>
+            <span class="notif-msg">${message}</span>
+        </div>
+        ${iconHtml}
+    `;
+    
+    container.appendChild(notif);
+    
+    if (typeof gsap !== 'undefined') {
+        gsap.fromTo(notif, 
+            { y: 50, opacity: 0, scale: 0.9 }, 
+            { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.5)" }
+        );
+        setTimeout(() => {
+            gsap.to(notif, { y: 20, opacity: 0, duration: 0.5, onComplete:()=>notif.remove() });
+        }, 3000);
+    } else {
+        setTimeout(() => notif.remove(), 3000);
+    }
+}
+
 async function submitContactForm(e) {
     e.preventDefault();
     
+    const gdprCheck = document.getElementById('gdpr-consent');
+    if(gdprCheck && !gdprCheck.checked) {
+        showContactNotification("Please agree to the Terms of Service & Privacy Policy.", "error");
+        return;
+    }
+
     const btn = e.target.querySelector('.submit-btn');
     const originalText = btn.innerHTML;
     
@@ -84,10 +141,13 @@ async function submitContactForm(e) {
             phone: phone,
             category: category,
             message: message,
+            gdprConsent: true, 
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             platform: 'web'
         });
 
+        showContactNotification("Message sent successfully! I'll be in touch.", "success");
+        
         btn.innerHTML = 'Message Sent ✓';
         btn.style.background = '#22c55e';
         
@@ -102,6 +162,9 @@ async function submitContactForm(e) {
 
     } catch (error) {
         console.error("Error adding document: ", error);
+        
+        showContactNotification("Error sending message. Please try again.", "error");
+
         btn.innerHTML = 'Error. Try Again.';
         btn.style.background = '#ef4444';
         

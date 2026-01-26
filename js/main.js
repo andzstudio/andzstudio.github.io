@@ -10,9 +10,9 @@ const firebaseConfig = {
 if (typeof firebase !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
     window.db = firebase.firestore();
-    console.log("Firebase Connected Successfully ✅");
+    console.log("Firebase conectat cu succes");
 } else {
-    console.warn("Firebase SDK not loaded or already initialized.");
+    console.warn("Firebase neincarcat sau deja conectat.");
 }
 
 window.showNotification = function(message) {
@@ -146,7 +146,7 @@ const cookieSystem = {
                         <img src="https://andzcr.github.io/resources/photos/cookies.png" alt="Cookies">
                     </div>
                     <div class="cookie-content">
-                        <h2 class="cookie-title">Unfortunately, I don't own a bakery 🍪</h2>
+                        <h2 class="cookie-title">Unfortunately, I don't own a bakery</h2>
                         <p class="cookie-description">
                             But we do use cookies to provide you with the smoothest digital experience possible. These help us analyze traffic, remember your preferences, and ensure our design "gravitates" correctly around your needs. By continuing to browse, you agree to our data policy.
                         </p>

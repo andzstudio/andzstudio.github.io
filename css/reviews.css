@@ -437,6 +437,10 @@ body.modal-open {
     font-size: 0.65rem; color: #444; pointer-events: none;
 }
 
+.review-gdpr-tweak {
+    margin-bottom: 20px;
+}
+
 .apple-col-right {
     flex: 1;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -605,7 +609,7 @@ body.modal-open {
     }
     .apple-rating-card img { width: 100%; height: 100%; }
     
-    .textarea-wrapper { margin-bottom: 60px; }
+    .textarea-wrapper { margin-bottom: 30px; }
 
     #notification-container {
         bottom: 20px; right: 50%; transform: translateX(50%);
