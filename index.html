@@ -5,44 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANDZ.ro | Studio</title>
     
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;300;400;600;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="https://andzcr.github.io/assets/favicon/apple-touch-icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="∀ N D Z">
     <link rel="icon" type="image/png" sizes="32x32" href="https://andzcr.github.io/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://andzcr.github.io/assets/favicon/favicon-16x16.png">
+    <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/services.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/reviews.css">
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/standout.css">
     <link rel="stylesheet" href="css/contact.css">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <link rel="stylesheet" href="css/bot.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link href="css/output.css" rel="stylesheet">
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .input-group span.label-text, 
+        .apple-input-group span.label-text {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body class="bg-black text-white">
     <div class="preloader">
-        <div class="loader-line"><div class="loader-fill"></div></div>
+        <div class="logo-loader-container">
+            <img src="https://andzcr.github.io/resources/photos/andz-logo.png" class="logo-base" alt="Loading...">
+            <div class="logo-liquid-mask">
+                <img src="https://andzcr.github.io/resources/photos/andz-logo.png" class="logo-filled" alt="Loading...">
+            </div>
+        </div>
     </div>
 
     <div class="progress-container">
@@ -51,457 +62,343 @@
 
     <div id="notification-container"></div>
 
-    <nav class="smart-nav fixed top-8 right-8 z-[100] flex justify-end items-center pointer-events-none">
-        <div class="nav-glass-capsule pointer-events-auto" id="nav-capsule">
-            <div class="nav-links-wrapper" id="nav-links">
-                <a href="#services" class="nav-link">Services</a>
-                <a href="#projects" class="nav-link">Projects</a>
-                <a href="#reviews" class="nav-link">Reviews</a>
+    <!-- navbar -->
+    <nav class="floating-nav" id="main-nav">
+        <div class="nav-content">
+            <div class="nav-left">
+                <img src="https://andzcr.github.io/resources/photos/andz-logo.png" class="nav-logo-img" alt="Logo">
             </div>
-            <button class="nav-cta-btn" id="nav-cta" onclick="document.querySelector('#contact').scrollIntoView({behavior: 'smooth'})">
-                <span>Get in Touch</span>
-            </button>
-        </div>
-
-        <div class="magnetic-wrap pointer-events-auto" id="burger-magnet">
-            <button class="minimal-burger-btn" id="nav-burger" onclick="toggleMenu()">
-                <div class="burger-box">
-                    <div class="mag-line line-1"></div>
-                    <div class="mag-line line-2"></div>
-                </div>
-                <div class="magnetic-area"></div>
-            </button>
+            <div class="nav-center">
+                <a href="#home" class="f-nav-link">
+                    <span class="link-text">Home</span>
+                    <span class="link-icon"><ion-icon name="home-outline"></ion-icon></span>
+                </a>
+                <a href="#services" class="f-nav-link">
+                    <span class="link-text">Services</span>
+                    <span class="link-icon"><ion-icon name="layers-outline"></ion-icon></span>
+                </a>
+                <a href="#projects" class="f-nav-link">
+                    <span class="link-text">Portfolio</span>
+                    <span class="link-icon"><ion-icon name="images-outline"></ion-icon></span>
+                </a>
+                <a href="#reviews" class="f-nav-link">
+                    <span class="link-text">Testimonials</span>
+                    <span class="link-icon"><ion-icon name="star-outline"></ion-icon></span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="#contact" class="nav-cta-btn">
+                    <span>Get in Touch</span>
+                </a>
+            </div>
         </div>
     </nav>
+    <div id="site-content" class="relative z-10 bg-black shadow-2xl">
+        <main id="main-content">
+    <!-- sections -->
+    <section id="home" class="home-section">
+        <div class="bg-video-wrapper">
+            <div class="video-overlay-gradient"></div>
+            <video class="hero-video" autoplay muted loop playsinline poster="https://res.cloudinary.com/df9syoltz/video/upload/v1769645265/YouCut_20260129_020339560_pn7ezh.mp4">
+                <source src="https://res.cloudinary.com/df9syoltz/video/upload/v1769685920/YouCut_20260129_132400092_eg8dj7.mp4" type="video/mp4" media="(max-width: 768px)">
+                <source src="https://res.cloudinary.com/df9syoltz/video/upload/v1769645265/YouCut_20260129_020339560_pn7ezh.mp4" type="video/mp4">
+            </video>
+        </div>
 
-    <div class="menu-overlay" id="menu-overlay">
-        <div class="menu-backdrop" onclick="toggleMenu()"></div>
-        
-        <div class="ios-interface">
-            <div class="ios-sidebar">
-                <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="ios-label">Navigation</span>
-                </div>
-                <nav class="ios-nav-list">
-                    <a href="#home"
-                        class="ios-link active"
-                        data-img="ios-img-home"
-                        onclick="navigateTo('#home')">
-                        <div class="icon-box"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></div>
-                        <span class="link-text">Home</span>
-                        <div class="active-dot"></div>
-                    </a>
-                    <a href="#services" class="ios-link" data-img="ios-img-services" onclick="toggleMenu()">
-                        <div class="icon-box"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg></div>
-                        <span class="link-text">Services</span>
-                        <div class="active-dot"></div>
-                    </a>
-                    <a href="#works" class="ios-link" data-img="ios-img-works" onclick="toggleMenu()">
-                        <div class="icon-box"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
-                        <span class="link-text">Works</span>
-                        <div class="active-dot"></div>
-                    </a>
-                    <a href="#reviews" class="ios-link" data-img="ios-img-reviews" onclick="toggleMenu()">
-                        <div class="icon-box"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div>
-                        <span class="link-text">Reviews</span>
-                        <div class="active-dot"></div>
-                    </a>
-                </nav>
-                
-                <div class="sidebar-footer">
-                    <div class="ios-profile-pill">
-                        <div class="p-avatar">
-                            <img src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="A">
-                        </div>
-                        <div class="p-info">
-                            <span class="p-name">ANDZ Studio</span>
-                            <span class="p-status">Available • Galați</span>
-                        </div>
-                    </div>
+        <div class="home-content-centered">
+            <h1 class="hero-center-title">
+                <span class="small-brand-text">Make your brand</span> <br>
+                <span class="gradient-lead big-impact-text">impossible to ignore.</span>
+            </h1>
+        </div>
+    </section>
+
+    <!-- manifesto -->
+    <section class="manifesto-section">
+        <div class="manifesto-wrapper">
+            <h2 class="manifesto-line">Where brands stop</h2>
+            <h2 class="manifesto-line">chasing</h2>
+            <h2 class="manifesto-line">and they start</h2>
+            <h2 class="manifesto-line" style="background: linear-gradient(180deg, #ffffff 0%, #690090 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; -webkit-text-stroke: 0;">LEADING</h2>
+        </div>
+    </section>
+
+    <!-- services -->
+    <section id="services" class="services-section">
+        <div class="services-container">
+            <div class="services-left">
+                <div class="sticky-wrapper">
+                    <img src="https://andzcr.github.io/resources/photos/services/webdevservice.jpg" class="service-img first" id="img-1" alt="Architecture">
+                    <img src="https://andzcr.github.io/resources/photos/services/brandservice.jpg" class="service-img" id="img-2" alt="Strategy">
+                    <img src="https://andzcr.github.io/resources/photos/services/general.jpg" class="service-img" id="img-3" alt="General">
                 </div>
             </div>
 
-            <div class="ios-content-area relative">
-                <div class="content-header">
-                    <span class="ch-title">Dashboard</span>
-                    <span class="ch-date" id="ios-clock">12:00 PM</span>
+            <div class="services-right">
+                <div class="service-item first-text" data-index="0">
+                    <img src="https://andzcr.github.io/resources/photos/services/webdevservice.png" class="mobile-img" alt="Mobile 1">
+                    <span class="service-meta">01 &mdash; ENGINEERING</span>
+                    <h3 class="service-title">Web Development</h3>
+                    <p class="service-desc">Leveraging the market's latest front-end technologies and the most secure back-end techniques, we build websites from the ground up.<br><br> Consult today, <span class="underline-text">launch in 48 hours</span> - Receive a fully responsive site, custom-tailored to your specific needs.</p>
                 </div>
 
-                <div class="widgets-grid">
-                    <div class="widget large-widget preview-widget">
-                        <div class="pw-image active" id="ios-img-home" style="background-image: url('https://andzcr.github.io/resources/photos/background.jpg');"></div>
-                        <div class="pw-image" id="ios-img-services" style="background-image: url('https://andzcr.github.io/resources/photos/services/webdevservice.png');"></div>
-                        <div class="pw-image" id="ios-img-works" style="background-image: url('https://andzcr.github.io/resources/projects/bass-logo.png');"></div>
-                        <div class="pw-image" id="ios-img-reviews" style="background-image: url('https://andzcr.github.io/resources/photos/reviews/good.png');"></div>
-                        <div class="pw-overlay">
-                            <span class="pw-tag">Preview</span>
-                        </div>
-                    </div>
-
-                    <a href="mailto:andz.contact@gmail.com" class="widget small-widget contact-widget">
-                        <div class="w-icon-circle">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </div>
-                        <div class="w-content">
-                            <span class="w-label">Contact Us</span>
-                            <span class="w-value">Send Email</span>
-                        </div>
-                        <div class="w-arrow">↗</div>
-                    </a>
-
-                    <div class="widget small-widget social-widget" onclick="toggleSocials()">
-                         <div class="social-trigger-content">
-                             <div class="social-mini-stack">
-                                 <div class="mini-dot"></div>
-                                 <div class="mini-dot"></div>
-                                 <div class="mini-dot"></div>
-                             </div>
-                             <span class="social-vertical-text">SOCIALS</span>
-                         </div>
-                         <div class="social-glow-orb"></div>
-                    </div>
+                <div class="service-item" data-index="1">
+                    <img src="https://andzcr.github.io/resources/photos/services/brandservice.png" class="mobile-img" alt="Mobile 2">
+                    <span class="service-meta">02 &mdash; VISION</span>
+                    <h3 class="service-title">Brand Design</h3>
+                    <p class="service-desc">Whether it's a clothing brand, a fragrance line, or even nail products, we deliver brand designs that meet your <span class="underline-text">highest expectations.</span><br><br>With continuous communication throughout our collaboration, there is no room for disappointment.</p>
                 </div>
 
-                <div class="social-expanded-overlay" id="social-overlay">
-                    <div class="social-modal-header">
-                        <h3 class="social-modal-title">Network</h3>
-                        <button class="social-close-btn" onclick="toggleSocials()">
-                            <ion-icon name="close-outline"></ion-icon>
+                <div class="service-item" data-index="2">
+                    <img src="https://andzcr.github.io/resources/photos/services/general.png" class="mobile-img" alt="Mobile 3">
+                    <span class="service-meta">03 &mdash; SKILLS</span>
+                    <h3 class="service-title">Other Skills</h3>
+                    <p class="service-desc">Whether leveraging the raw performance of C++, the versatility of Python, or the flexibility of Lua, we <span class="underline-text">deliver results.</span><br><br>Regardless of the scope or application, we prioritize clear communication to ensure the final product aligns perfectly with your vision.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- words -->
+    <section class="fw-section">
+        <div class="fw-track">
+            <div class="fw-item"><h2 class="fw-big-text">CONVERT</h2><div class="fw-details"><span class="fw-num">01</span><p class="fw-desc">Built for today, flexing for what's next. A timeless approach to modern challenges.</p></div></div>
+            <div class="fw-item"><h2 class="fw-big-text">PURPOSE</h2><div class="fw-details"><span class="fw-num">02</span><p class="fw-desc">Thoughtful, not trendy. Work grounded in purpose, not passing fads. Strategy first, pixels second.</p></div></div>
+            <div class="fw-item"><h2 class="fw-big-text">SPEED</h2><div class="fw-details"><span class="fw-num">03</span><p class="fw-desc">A streamlined process. Quick, clean & no chaos. Efficiency in every delivery.</p></div></div>
+        </div>
+    </section>
+
+    <!-- projects -->
+    <section id="projects" class="works-section">
+        <div class="works-gradient-mask"></div>
+        <div class="works-header-abs">
+            <div class="title-line-wrapper"><h2 class="works-big-title work-title-anim">Selected</h2></div>
+            <div class="title-line-wrapper"><h2 class="works-big-title outline-text work-title-anim md:pl-20">Works<span class="text-purple-500">.</span></h2></div>
+        </div>
+        <div class="works-track">
+            <div class="work-card" data-project="bass">
+                <img src="https://andzcr.github.io/resources/projects/bass-logo.png" class="wc-img" alt="Bass Industries">
+                <div class="wc-overlay"><span class="wc-cat"></span><h3 class="wc-title"></h3></div>
+            </div>
+            <div class="work-card" data-project="corelle">
+                <img src="https://andzcr.github.io/resources/projects/corelle-logo.png" class="wc-img" alt="CORELLE Cosmetics">
+                <div class="wc-overlay"><span class="wc-cat"></span><h3 class="wc-title"></h3></div>
+            </div>
+            <div class="view-more-card">
+                <span class="vm-label">ARCHIVE</span><h3 class="vm-text">View All<br>Projects</h3>
+                <div class="vm-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- reviews -->
+    <section id="reviews" class="reviews-section pb-20">
+        <div class="reviews-sticky-wrapper">
+            <div class="reviews-zoom-container"><h2 class="reviews-title-zoom">Voices of the <br> Industry.</h2></div>
+            <div class="chat-layout">
+                <div class="chat-filter-header">
+                    <button class="chat-filter-btn active" onclick="filterChat('all', this)">All</button>
+                    <button class="chat-filter-btn" onclick="filterChat('web', this)">Web Development</button>
+                    <button class="chat-filter-btn" onclick="filterChat('brand', this)">Brand Design</button>
+                </div>
+                <div class="chat-column" id="reviews-container"></div>
+            </div>
+            <div class="cta-final-wrapper">
+                <div class="cta-word-wrapper"><span class="cta-word" id="word-your">YOUR</span><span class="cta-word accent" id="word-turn">TURN</span></div>
+                <div class="cta-stats-container">
+                    <div class="cta-rating-pill"><span class="cta-score" id="avg-rating-display">5.00</span><svg class="cta-star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                    <span class="cta-reviews-text">Join the list of happy clients</span>
+                </div>
+                <div class="cta-input-btn" onclick="openReviewModal()">
+                    <span class="cta-placeholder">Write your review...</span>
+                    <div class="cta-send-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- contact -->
+    <section id="contact" class="contact-section">
+        <div class="contact-glow"></div>
+        
+        <div class="contact-container">
+            <div class="contact-left">
+                <div class="contact-header">
+                    <h2>Get in Touch</h2>
+                    <p>I usually respond within 24 hours.</p>
+                </div>
+                
+                <div class="contact-form-wrapper contact-form-box">
+                    <form id="main-contact-form" onsubmit="submitContactForm(event)">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="contact-email">Email Address</label>
+                                <input type="email" id="contact-email" placeholder="andz@example.com" class="contact-input" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="contact-phone">Phone Number</label>
+                                <input type="tel" id="contact-phone" placeholder="+40 700 000 000" class="contact-input">
+                            </div>
+                        </div>
+
+                        <div class="input-group mt-2">
+                            <span class="label-text">I'm interested in</span>
+                            <div class="category-grid">
+                                <label class="cat-option">
+                                    <input type="radio" name="category" value="web" checked>
+                                    <div class="cat-card">
+                                        <div class="cat-icon">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                                        </div>
+                                        <div class="cat-info">
+                                            <span class="cat-title">Web Dev</span>
+                                            <span class="cat-sub">Engineering</span>
+                                        </div>
+                                        <div class="cat-indicator"></div>
+                                    </div>
+                                </label>
+
+                                <label class="cat-option">
+                                    <input type="radio" name="category" value="brand">
+                                    <div class="cat-card">
+                                        <div class="cat-icon">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                                        </div>
+                                        <div class="cat-info">
+                                            <span class="cat-title">Branding</span>
+                                            <span class="cat-sub">Identity</span>
+                                        </div>
+                                        <div class="cat-indicator"></div>
+                                    </div>
+                                </label>
+
+                                <label class="cat-option">
+                                    <input type="radio" name="category" value="other">
+                                    <div class="cat-card">
+                                        <div class="cat-icon">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                        </div>
+                                        <div class="cat-info">
+                                            <span class="cat-title">Other</span>
+                                            <span class="cat-sub">Inquiry</span>
+                                        </div>
+                                        <div class="cat-indicator"></div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="input-group mt-2">
+                            <label for="contact-message">Tell us about your project</label>
+                            <textarea id="contact-message" placeholder="Describe your vision, goals, or current challenges..." class="contact-textarea" required></textarea>
+                        </div>
+
+                        <div class="round-check-group mt-2">
+                            <label class="round-checkbox-container">
+                                <input type="checkbox" id="gdpr-consent" required>
+                                <span class="checkmark-circle"></span>
+                            </label>
+                            <span class="gdpr-label">I agree to the <span class="gdpr-link" onclick="openGDPR()">Terms of Service and Privacy Policy</span>.</span>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <span>Send Message</span>
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
                         </button>
-                    </div>
-                    
-                    <div class="socials-grid-full">
-                        <a href="https://linkedin.com/in/lehadus-andrei-25a807372/" class="social-card" target="_blank" data-platform="linkedin">
-                            <div class="sc-icon"><ion-icon name="logo-linkedin"></ion-icon></div>
-                            <span class="sc-name">LinkedIn</span>
-                        </a>
-                        <a href="https://github.com/andzcr" class="social-card" target="_blank" data-platform="github">
-                            <div class="sc-icon"><ion-icon name="logo-github"></ion-icon></div>
-                            <span class="sc-name">GitHub</span>
-                        </a>
-                        <a href="https://discord.com/users/andz7z" class="social-card" target="_blank" data-platform="discord">
-                            <div class="sc-icon"><ion-icon name="logo-discord"></ion-icon></div>
-                            <span class="sc-name">Discord</span>
-                        </a>
-                        <a href="https://www.tiktok.com/@andz_cr" class="social-card" target="_blank" data-platform="tiktok">
-                            <div class="sc-icon"><ion-icon name="logo-tiktok"></ion-icon></div>
-                            <span class="sc-name">TikTok</span>
-                        </a>
-                        <a href="https://youtube.com/@visuals_mods" class="social-card" target="_blank" data-platform="youtube">
-                            <div class="sc-icon"><ion-icon name="logo-youtube"></ion-icon></div>
-                            <span class="sc-name">YouTube</span>
-                        </a>
-                        <a href="https://instagram.com/ndr.xc" class="social-card" target="_blank" data-platform="instagram">
-                            <div class="sc-icon"><ion-icon name="logo-instagram"></ion-icon></div>
-                            <span class="sc-name">Instagram</span>
-                        </a>
-                        <a href="https://facebook.com/andzcr" class="social-card" target="_blank" data-platform="facebook">
-                            <div class="sc-icon"><ion-icon name="logo-facebook"></ion-icon></div>
-                            <span class="sc-name">Facebook</span>
-                        </a>
-                        <a href="mailto:lehadus04@gmail.com" class="social-card" data-platform="gmail">
-                            <div class="sc-icon"><ion-icon name="mail-outline"></ion-icon></div>
-                            <span class="sc-name">Gmail</span>
-                        </a>
+                    </form>
+                </div>
+            </div>
+
+            <div class="contact-right">
+                <div class="contact-faq-wrapper">
+                    <h3 class="faq-title">Common Questions</h3>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>How much does a project cost?</h3>
+                                <div class="faq-icon">
+                                    <div class="icon-line h"></div>
+                                    <div class="icon-line v"></div>
+                                </div>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Every project is unique. Pricing depends on complexity, features, and timeline. Contact me for a precise quote.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>What is the typical timeline?</h3>
+                                <div class="faq-icon">
+                                    <div class="icon-line h"></div>
+                                    <div class="icon-line v"></div>
+                                </div>
+                            </div>
+                            <div class="faq-answer">
+                                <p>For standard websites ("Consult today, launch in 48h"), we move fast. Complex custom platforms typically take 2-4 weeks. Branding projects usually take 1-2 weeks depending on feedback loops.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Do you provide hosting & maintenance?</h3>
+                                <div class="faq-icon">
+                                    <div class="icon-line h"></div>
+                                    <div class="icon-line v"></div>
+                                </div>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes. We offer monthly maintenance packages that include secure hosting, regular updates, backups, and 24/7 monitoring to ensure your digital presence never sleeps.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Can you redesign an existing site?</h3>
+                                <div class="faq-icon">
+                                    <div class="icon-line h"></div>
+                                    <div class="icon-line v"></div>
+                                </div>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Absolutely. We specialize in taking outdated platforms and modernizing the stack, improving speed, and refining the UX/UI.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Do you work internationally?</h3>
+                                <div class="faq-icon">
+                                    <div class="icon-line h"></div>
+                                    <div class="icon-line v"></div>
+                                </div>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes, while we are based in Romania, we work with clients globally. We use tools like Discord, Slack, and Zoom to maintain seamless communication regardless of timezone.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="site-content" class="relative z-10 bg-black shadow-2xl">
-        <main id="main-content">
-            <section id="home" class="home-section">
-                <div class="bg-reveal-wrapper">
-                    <div class="bg-base"></div>
-                    <canvas id="reveal-canvas"></canvas>
+    </section>
+</main>
+</div>
+    <!-- footer -->
+    <footer id="mega-footer" class="fixed bottom-0 left-0 w-full z-0 flex flex-col justify-end bg-neutral-950 overflow-hidden">
+        <div class="footer-mask absolute top-0 left-0 w-full h-40 z-20 pointer-events-none"></div>
+        <div class="container mx-auto px-6 md:px-12 relative z-10 w-full pb-8">
+            <div class="w-full flex justify-center items-center overflow-hidden py-10 md:py-20 select-none">
+                <h1 class="andz-big-text">ANDZ</h1>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs uppercase tracking-widest text-neutral-500 border-t border-white/10 pt-8">
+                <span>© 2026 ANDZ. All rights reserved ✔</span>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="https://github.com/andzcr" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
+                    <a href="https://ro.linkedin.com/in/lehadus-andrei-25a807372" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn</a>
+                    <a href="mailto:andz.contact@gmail.com" class="hover:text-white transition-colors">Email</a>
                 </div>
-                <div class="home-content">
-                    <div class="top-left-brand">
-                        <div class="logo-3d-wrapper">
-                            <div class="logo-3d-scene">
-                                <div class="logo-3d-obj">
-                                    <div class="logo-layer l1"><img src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Logo"></div>
-                                    <div class="logo-layer l2"><img src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Logo"></div>
-                                    <div class="logo-layer l3"><img src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Logo"></div>
-                                    <div class="logo-layer l4"><img src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Logo"></div>
-                                    <div class="logo-layer l5"><img src="https://andzcr.github.io/resources/photos/andz-logo.png" alt="Logo"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="brand-text">
-                            <h1 class="brand-name">ANDZ</h1>
-                            <div class="brand-sub-rotator" id="subtitle-rotator">
-                                <div class="brand-sub-item active">Web Developer</div>
-                                <div class="brand-sub-item">Brand Designer</div>
-                                <div class="brand-sub-item">Creative Engineer</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom-left-group">
-                        <p class="vision-top">WHERE YOUR BRAND</p>
-                        <h2 class="vision-main">FEELS</h2>
-                        <div class="word-rotator" id="main-rotator">
-                            <span class="rotating-word active">Powerful</span>
-                            <span class="rotating-word">Timeless</span>
-                            <span class="rotating-word">Iconic</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="manifesto-section">
-                <div class="manifesto-wrapper">
-                    <h2 class="manifesto-line">Your brand has</h2>
-                    <h2 class="manifesto-line">value I make sure</h2>
-                    <h2 class="manifesto-line">your users can</h2>
-                    <h2 class="manifesto-line" style="color: #a855f7; -webkit-text-stroke: 0;">SEE IT.</h2>
-                </div>
-            </section>
-
-            <section id="services" class="services-section">
-                <div class="services-container">
-                    <div class="services-left">
-                        <div class="sticky-wrapper">
-                            <img src="https://andzcr.github.io/resources/photos/services/webdevservice.png" class="service-img first" id="img-1" alt="Architecture">
-                            <img src="https://andzcr.github.io/resources/photos/services/brandservice.png" class="service-img" id="img-2" alt="Strategy">
-                        </div>
-                    </div>
-                    <div class="services-right">
-                        <div class="service-item first-text" data-index="0">
-                            <img src="https://andzcr.github.io/resources/photos/services/webdevservice.png" class="mobile-img" alt="Mobile 1">
-                            <span class="service-meta">01 &mdash; ENGINEERING</span>
-                            <h3 class="service-title">Web Development</h3>
-                            <p class="service-desc">Leveraging the market's latest front-end technologies and the most secure back-end techniques, we build websites from the ground up.<br><br> Consult today, <span class="underline-text">launch in 48 hours</span> - Receive a fully responsive site, custom-tailored to your specific needs.</p>
-                        </div>
-                        <div class="service-item" data-index="1">
-                            <img src="https://andzcr.github.io/resources/photos/services/brandservice.png" class="mobile-img" alt="Mobile 2">
-                            <span class="service-meta">02 &mdash; VISION</span>
-                            <h3 class="service-title">Brand Design</h3>
-                            <p class="service-desc">Whether it's a clothing brand, a fragrance line, or even nail products, we deliver brand designs that meet your <span class="underline-text">highest expectations.</span><br><br>With continuous communication throughout our collaboration, there is no room for disappointment.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="fw-section">
-                <div class="fw-track">
-                    <div class="fw-item"><h2 class="fw-big-text">CONVERT</h2><div class="fw-details"><span class="fw-num">01</span><p class="fw-desc">Built for today, flexing for what's next. A timeless approach to modern challenges.</p></div></div>
-                    <div class="fw-item"><h2 class="fw-big-text">PURPOSE</h2><div class="fw-details"><span class="fw-num">02</span><p class="fw-desc">Thoughtful, not trendy. Work grounded in purpose, not passing fads. Strategy first, pixels second.</p></div></div>
-                    <div class="fw-item"><h2 class="fw-big-text">SPEED</h2><div class="fw-details"><span class="fw-num">03</span><p class="fw-desc">A streamlined process. Quick, clean & no chaos. Efficiency in every delivery.</p></div></div>
-                </div>
-            </section>
-
-            <section id="projects" class="works-section">
-                <div class="works-gradient-mask"></div>
-                <div class="works-header-abs">
-                    <div class="title-line-wrapper"><h2 class="works-big-title work-title-anim">Selected</h2></div>
-                    <div class="title-line-wrapper"><h2 class="works-big-title outline-text work-title-anim md:pl-20">Works<span class="text-purple-500">.</span></h2></div>
-                </div>
-                <div class="works-track">
-                    <div class="work-card" data-project="bass">
-                        <img src="https://andzcr.github.io/resources/projects/bass-logo.png" class="wc-img" alt="Bass Industries">
-                        <div class="wc-overlay"><span class="wc-cat"></span><h3 class="wc-title"></h3></div>
-                    </div>
-                    <div class="work-card" data-project="corelle">
-                        <img src="https://andzcr.github.io/resources/projects/corelle-logo.png" class="wc-img" alt="CORELLE Cosmetics">
-                        <div class="wc-overlay"><span class="wc-cat"></span><h3 class="wc-title"></h3></div>
-                    </div>
-                    <div class="view-more-card">
-                        <span class="vm-label">ARCHIVE</span><h3 class="vm-text">View All<br>Projects</h3>
-                        <div class="vm-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="reviews" class="reviews-section pb-20">
-                <div class="reviews-sticky-wrapper">
-                    <div class="reviews-zoom-container"><h2 class="reviews-title-zoom">Voices of the <br> Industry.</h2></div>
-                    <div class="chat-layout">
-                        <div class="chat-filter-header">
-                            <button class="chat-filter-btn active" onclick="filterChat('all', this)">All</button>
-                            <button class="chat-filter-btn" onclick="filterChat('web', this)">Web Development</button>
-                            <button class="chat-filter-btn" onclick="filterChat('brand', this)">Brand Design</button>
-                        </div>
-                        <div class="chat-column" id="reviews-container"></div>
-                    </div>
-                    <div class="cta-final-wrapper">
-                        <div class="cta-word-wrapper"><span class="cta-word" id="word-your">YOUR</span><span class="cta-word accent" id="word-turn">TURN</span></div>
-                        <div class="cta-stats-container">
-                            <div class="cta-rating-pill"><span class="cta-score" id="avg-rating-display">5.00</span><svg class="cta-star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-                            <span class="cta-reviews-text">Join the list of happy clients</span>
-                        </div>
-                        <div class="cta-input-btn" onclick="openReviewModal()">
-                            <span class="cta-placeholder">Write your review...</span>
-                            <div class="cta-send-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contact" class="contact-section">
-                <div class="contact-glow"></div>
-                
-                <div class="contact-container">
-                    <div class="contact-left">
-                        <div class="contact-header">
-                            <h2>Get in Touch</h2>
-                            <p>I usually respond within 24 hours.</p>
-                        </div>
-                        
-                        <div class="contact-form-wrapper contact-form-box">
-                            <form id="main-contact-form" onsubmit="submitContactForm(event)">
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>Email Address</label>
-                                        <input type="email" id="contact-email" placeholder="andz@example.com" class="contact-input" required>
-                                    </div>
-                                    <div class="input-group">
-                                        <label>Phone Number</label>
-                                        <input type="tel" id="contact-phone" placeholder="+40 700 000 000" class="contact-input">
-                                    </div>
-                                </div>
-
-                                <div class="input-group mt-2">
-                                    <label>I'm interested in</label>
-                                    <div class="category-grid">
-                                        <label class="cat-option">
-                                            <input type="radio" name="category" value="web" checked>
-                                            <div class="cat-card">
-                                                <div class="cat-icon">
-                                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                                                </div>
-                                                <div class="cat-info">
-                                                    <span class="cat-title">Web Dev</span>
-                                                    <span class="cat-sub">Engineering</span>
-                                                </div>
-                                                <div class="cat-indicator"></div>
-                                            </div>
-                                        </label>
-
-                                        <label class="cat-option">
-                                            <input type="radio" name="category" value="brand">
-                                            <div class="cat-card">
-                                                <div class="cat-icon">
-                                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                                                </div>
-                                                <div class="cat-info">
-                                                    <span class="cat-title">Branding</span>
-                                                    <span class="cat-sub">Identity</span>
-                                                </div>
-                                                <div class="cat-indicator"></div>
-                                            </div>
-                                        </label>
-
-                                        <label class="cat-option">
-                                            <input type="radio" name="category" value="other">
-                                            <div class="cat-card">
-                                                <div class="cat-icon">
-                                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                                                </div>
-                                                <div class="cat-info">
-                                                    <span class="cat-title">Other</span>
-                                                    <span class="cat-sub">Inquiry</span>
-                                                </div>
-                                                <div class="cat-indicator"></div>
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="input-group mt-2">
-                                    <label>Tell us about your project</label>
-                                    <textarea id="contact-message" placeholder="Describe your vision, goals, or current challenges..." class="contact-textarea" required></textarea>
-                                </div>
-
-                                <div class="round-check-group mt-2">
-                                    <label class="round-checkbox-container">
-                                        <input type="checkbox" id="gdpr-consent" required>
-                                        <span class="checkmark-circle"></span>
-                                    </label>
-                                    <span class="gdpr-label">I agree to the <span class="gdpr-link" onclick="openGDPR()">Terms of Service and Privacy Policy</span>.</span>
-                                </div>
-
-                                <button type="submit" class="submit-btn">
-                                    <span>Send Message</span>
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="contact-right">
-                        <div class="contact-faq-wrapper">
-                            <h3 class="faq-title">Common Questions</h3>
-                            <div class="faq-list">
-                                <div class="faq-item">
-                                    <div class="faq-question">
-                                        <h3>How much does a project cost?</h3>
-                                        <div class="faq-icon">
-                                            <div class="icon-line h"></div>
-                                            <div class="icon-line v"></div>
-                                        </div>
-                                    </div>
-                                    <div class="faq-answer">
-                                        <p>Every project is unique. Pricing depends on complexity, features, and timeline. Contact me for a precise quote.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-item">
-                                    <div class="faq-question">
-                                        <h3>What is the typical timeline?</h3>
-                                        <div class="faq-icon">
-                                            <div class="icon-line h"></div>
-                                            <div class="icon-line v"></div>
-                                        </div>
-                                    </div>
-                                    <div class="faq-answer">
-                                        <p>For standard websites ("Consult today, launch in 48h"), we move fast. Complex custom platforms typically take 2-4 weeks. Branding projects usually take 1-2 weeks depending on feedback loops.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-item">
-                                    <div class="faq-question">
-                                        <h3>Do you provide hosting & maintenance?</h3>
-                                        <div class="faq-icon">
-                                            <div class="icon-line h"></div>
-                                            <div class="icon-line v"></div>
-                                        </div>
-                                    </div>
-                                    <div class="faq-answer">
-                                        <p>Yes. We offer monthly maintenance packages that include secure hosting, regular updates, backups, and 24/7 monitoring to ensure your digital presence never sleeps.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-item">
-                                    <div class="faq-question">
-                                        <h3>Can you redesign an existing site?</h3>
-                                        <div class="faq-icon">
-                                            <div class="icon-line h"></div>
-                                            <div class="icon-line v"></div>
-                                        </div>
-                                    </div>
-                                    <div class="faq-answer">
-                                        <p>Absolutely. We specialize in taking outdated platforms and modernizing the stack, improving speed, and refining the UX/UI.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-item">
-                                    <div class="faq-question">
-                                        <h3>Do you work internationally?</h3>
-                                        <div class="faq-icon">
-                                            <div class="icon-line h"></div>
-                                            <div class="icon-line v"></div>
-                                        </div>
-                                    </div>
-                                    <div class="faq-answer">
-                                        <p>Yes, while we are based in Romania, we work with clients globally. We use tools like Discord, Slack, and Zoom to maintain seamless communication regardless of timezone.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
+                <span class="mt-4 md:mt-0">📍 Galați, RO</span>
+            </div>
+        </div>
+    </footer>
+    <!-- modals -->
     <div id="gdpr-modal" class="gdpr-overlay">
         <div class="gdpr-card">
             <div class="gdpr-header">
@@ -541,24 +438,6 @@
             <button onclick="closeGDPR()" class="gdpr-understand-btn">Am înțeles</button>
         </div>
     </div>
-
-    <footer id="mega-footer" class="fixed bottom-0 left-0 w-full z-0 flex flex-col justify-end bg-neutral-950 overflow-hidden">
-        <div class="footer-mask absolute top-0 left-0 w-full h-40 z-20 pointer-events-none"></div>
-        <div class="container mx-auto px-6 md:px-12 relative z-10 w-full pb-8">
-            <div class="w-full flex justify-center items-center overflow-hidden py-10 md:py-20 select-none">
-                <h1 class="andz-big-text">ANDZ</h1>
-            </div>
-            <div class="flex flex-col md:flex-row justify-between items-center text-xs uppercase tracking-widest text-neutral-500 border-t border-white/10 pt-8">
-                <span>© 2026 ANDZ. All rights reserved ✔</span>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="https://github.com/andzcr" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
-                    <a href="https://ro.linkedin.com/in/lehadus-andrei-25a807372" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn</a>
-                    <a href="mailto:andz.contact@gmail.com" class="hover:text-white transition-colors">Email</a>
-                </div>
-                <span class="mt-4 md:mt-0">📍 Galați, RO</span>
-            </div>
-        </div>
-    </footer>
 
     <div id="project-modal" class="project-modal">
         <div class="modal-grain"></div>
@@ -619,7 +498,7 @@
 
                     <form class="apple-form-stack" onsubmit="event.preventDefault();">
                         <div class="apple-input-group">
-                            <label>Service</label>
+                            <span class="label-text">Service</span>
                             <div class="service-select-grid">
                                 <div class="service-card active" data-val="web" onclick="selectService('web')">
                                     <div class="sc-icon-box web"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
@@ -635,7 +514,7 @@
                         </div>
 
                         <div class="apple-input-group">
-                            <label>Rating</label>
+                            <span class="label-text">Rating</span>
                             <div class="apple-rating-grid">
                                 <div class="apple-rating-card" data-rating="1" onclick="selectRating(1)">
                                     <img src="https://andzcr.github.io/resources/photos/reviews/poor.png" alt="Poor">
@@ -653,12 +532,12 @@
                         </div>
 
                         <div class="apple-input-group">
-                            <label>Name</label>
+                            <label for="rev-name">Name</label>
                             <input type="text" id="rev-name" class="apple-input" placeholder="Your Name" oninput="updatePreview()">
                         </div>
                         
                         <div class="apple-input-group">
-                            <label>Review</label>
+                            <label for="rev-desc">Review</label>
                             <div class="textarea-wrapper">
                                 <textarea id="rev-desc" class="apple-textarea" placeholder="How was it?" oninput="updatePreview()"></textarea>
                                 <span class="apple-counter" id="char-counter">0/100</span>
@@ -697,14 +576,62 @@
             </div>
         </div>
     </div>
+    <!-- AZZIST -->
+<div id="andz-assistant-container">
+    <div id="azzis-notification">
+        <div style="flex:1">
+            <div class="notif-header">Azzist</div>
+            <div>Let me know if I can help with anything.</div>
+        </div>
+    </div>
+    <div id="azzis-launcher" onclick="toggleAzzisChat()">
+        <img src="https://andzcr.github.io/resources/photos/bot/notif-logo.png" alt="ANDZ Assistant">
+    </div>
+    <div id="azzis-chat-window">
+        <div class="chat-header">
+            <div class="chat-profile-brand">
+                <img src="https://andzcr.github.io/resources/photos/bot/chat-logo.png" alt="Azzist" class="chat-logo-brand">
+            </div>
+            
+            <div class="chat-controls">
+                <button class="reset-chat-btn" onclick="resetAzzisChat()" title="Reset Chat">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                    </svg>
+                </button>
+                <button class="close-chat-btn" onclick="toggleAzzisChat()">✕</button>
+            </div>
+        </div>
 
+        <div class="chat-messages" id="azzis-messages">
+            <div class="message bot">
+                Hi 👋<br>I’m Azzist — ANDZ Assistant.<br>How can I help you today?
+                <span class="msg-time">Now</span>
+            </div>
+            <div class="typing-indicator" id="azzis-typing">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="azzis-input" placeholder="Type a message..." onkeypress="handleAzzisInput(event)">
+            <button class="send-btn" onclick="sendAzzisMessage()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </div>
+
+</div>
+    <!-- Scripts -->
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
+    <script src="js/bot.js"></script>
     <script src="js/services.js"></script>
     <script src="js/projects.js"></script>
     <script src="js/reviews.js"></script>
-    <script src="js/standout.js"></script>
     <script src="js/contact.js"></script>
 </body>
-
 </html>

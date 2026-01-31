@@ -15,14 +15,19 @@ function initServicesAnimations() {
         });
 
         tlServices.to(".service-item[data-index='0']", { opacity: 0, duration: 1 })
-                  .to("#img-1", { y: "-120%", filter: "brightness(0.6)", duration: 1 }, "<")
-                  .to("#img-2", { y: "0%", filter: "brightness(1)", duration: 1 }, "<")
-                  .to(".service-item[data-index='1']", { opacity: 1, pointerEvents: "auto", duration: 1 }, "<");
+                .to("#img-1", { y: "-120%", filter: "brightness(0.6)", duration: 1 }, "<")
+                .to("#img-2", { y: "0%", filter: "brightness(1) contrast(1)", duration: 1 }, "<")
+                .to(".service-item[data-index='1']", { opacity: 1, pointerEvents: "auto", duration: 1 }, "<");
 
         tlServices.to(".service-item[data-index='1']", { opacity: 0, pointerEvents: "none", duration: 1 })
-                  .to("#img-2", { y: "-120%", filter: "brightness(0.6)", duration: 1 }, "<")
-                  .to("#img-3", { y: "0%", filter: "brightness(1)", duration: 1 }, "<")
-                  .to(".service-item[data-index='2']", { opacity: 1, pointerEvents: "auto", duration: 1 }, "<");
+                .to("#img-2", { y: "-120%", filter: "brightness(0.6)", duration: 1 }, "<")
+                .to("#img-3", { y: "0%", filter: "brightness(1) contrast(1)", duration: 1 }, "<")
+                .to(".service-item[data-index='2']", { opacity: 1, pointerEvents: "auto", duration: 1 }, "<");
+        
+        tlServices.to(".service-item[data-index='2']", { opacity: 0, pointerEvents: "none", duration: 1 })
+                .to("#img-2", { y: "-120%", filter: "brightness(0.6)", duration: 1 }, "<")
+                .to("#img-3", { y: "0%", filter: "brightness(1) contrast(1)", duration: 1 }, "<")
+                .to(".service-item[data-index='3']", { opacity: 1, pointerEvents: "auto", duration: 1 }, "<");
 
         return () => {
             if (tlServices.scrollTrigger) {

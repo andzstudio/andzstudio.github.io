@@ -28,7 +28,7 @@
     flex-direction: column;
     justify-content: center;
     padding: 4rem 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 0, 0, 0.1);
     position: relative;
     min-height: auto;
     height: auto;
@@ -44,11 +44,22 @@
         display: flex !important;
         visibility: visible !important;
     }
+    .underline-text {
+    background: linear-gradient(90deg, #ffffff 0%, #690090 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    }
 }
 
 .service-meta { 
     font-family: 'JetBrains Mono', monospace; 
-    color: #a855f7; 
+    background: linear-gradient(90deg, #ffffff 0%, #690090 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
     font-size: 0.8rem; 
     margin-bottom: 1rem; 
     display: block; 
@@ -126,9 +137,11 @@
         filter: brightness(0.6);
     }
     .underline-text {
-    text-decoration: underline;
-    text-decoration-color: var(--accent-purple); 
-    text-underline-offset: 4px;
+    background: linear-gradient(90deg, #ffffff 0%, #690090 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
     }
     .service-img.first { 
         transform: translateY(0%); 

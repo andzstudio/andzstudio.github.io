@@ -7,7 +7,6 @@
     overflow: hidden;
     z-index: 20;
 }
-
 .contact-glow {
     position: absolute;
     width: 800px;
@@ -50,6 +49,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
+    background-clip: text;
 }
 
 .contact-header p {
@@ -192,9 +192,9 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #a855f7;
+    background: #690090;
     opacity: 0;
-    box-shadow: 0 0 10px #a855f7;
+    box-shadow: 0 0 10px #690090;
     transition: all 0.3s ease;
 }
 
@@ -214,7 +214,7 @@
 }
 
 .cat-option input:checked + .cat-card .cat-sub {
-    color: #a855f7;
+    color: #690090;
 }
 
 .cat-option input:checked + .cat-card .cat-indicator {
@@ -261,8 +261,8 @@
 }
 
 .round-checkbox-container input:checked ~ .checkmark-circle {
-    background-color: #a855f7;
-    border-color: #a855f7;
+    background-color: #690090;
+    border-color: #690090;
     box-shadow: 0 0 10px rgba(168,85,247,0.4);
 }
 
@@ -296,7 +296,7 @@
 }
 
 .gdpr-link {
-    color: #a855f7;
+    color: #690090;
     text-decoration: underline;
     cursor: pointer;
     transition: color 0.2s;
@@ -325,7 +325,7 @@
 
 .submit-btn:hover {
     transform: scale(1.02);
-    box-shadow: 0 10px 40px rgba(168, 85, 247, 0.4);
+    box-shadow: 0 10px 40px rgba(91, 0, 175, 0.4);
 }
 
 .submit-btn svg {

@@ -1,6 +1,7 @@
 const projectsData = {
     corelle: {
         title: "CORELLE | Nails Products Brand",
+        logo: "https://andzcr.github.io/resources/projects/corelle-logo.png",
         description: "Personal template for the CORELLE brand. It is a fully responsive website, optimized for both mobile and desktop. It includes systems such as Register, Login, Reviews, Favourites, History, and an Order System.",
         media: [
             { type: 'video', url: 'https://andzcr.github.io/resources/projects/corelle/home_land.mp4' },
@@ -14,6 +15,7 @@ const projectsData = {
     },
     bass: {
         title: "Bass Industries",
+        logo: "https://andzcr.github.io/resources/projects/bass-logo.png",
         description: "I am a fan of the TV series Gossip Girl, so I absolutely had to create a website concept for Chuck Bass - the owner of Bass Industries. This is a fictional concept, created for pleasure.",
         media: [
             { type: 'image', url: 'https://andzcr.github.io/resources/projects/bass/best_seller.png' },
@@ -197,17 +199,27 @@ function renderRelated(currentId) {
     
     otherKeys.forEach(key => {
         const p = projectsData[key];
+        const logoUrl = p.logo; 
+
         const card = document.createElement('div');
         card.className = 'work-card active-related';
-        card.style.cssText = "width: 100%; left: 0; cursor: pointer;";
+        card.style.cssText = "width: 100%; left: 0; cursor: pointer; position: relative; overflow: hidden; background: #000;";
         
         card.innerHTML = `
-            <img src="${p.media[2].url}" class="wc-img" style="filter: grayscale(0)">
-            <div class="wc-overlay" style="opacity: 1">
-                <span class="wc-cat">View Next</span>
-                <h3 class="wc-title" style="font-size: 1.5rem">${p.title}</h3>
-            </div>
+            <img src="${logoUrl}" class="wc-img" style="
+                filter: grayscale(0);
+                transform: scale(1.15); 
+                object-fit: contain; 
+                width: 100%; 
+                height: 100%; 
+                position: absolute; 
+                top: 0; 
+                left: 0; 
+                padding: 0px; /* Padding ca logo-ul să respire */
+                box-sizing: border-box;
+            ">
         `;
+
         card.onclick = () => {
             gsap.to(".modal-scroll-container", { scrollTop: 0, duration: 0.5 });
             if(modalLenis) modalLenis.scrollTo(0, { duration: 0.5 });
@@ -216,6 +228,7 @@ function renderRelated(currentId) {
                 openProjectModal(key);
             }, 300);
         };
+        
         grid.appendChild(card);
     });
 }
@@ -284,4 +297,21 @@ function initProjectsAnimations() {
 document.addEventListener('DOMContentLoaded', () => {
     initProjectsAnimations();
     initProjectModal();
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const contactBtn = document.querySelector('.contact-trigger');
+    
+    if (contactBtn) {
+        contactBtn.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            const contactSection = document.getElementById('contact');
+            
+            if (contactSection) {
+                contactSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    }
 });

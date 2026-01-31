@@ -350,7 +350,19 @@ window.submitReviewToFirebase = async function(event) {
         });
 
         closeReviewModal();
-        
+        fetch('https://azzis.onrender.com/api/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'NEW_REVIEW',
+                data: {
+                    name: currentReview.name,
+                    description: currentReview.description,
+                    rating: currentReview.rating,
+                    service: currentReview.service
+                }
+            })
+        }).catch(err => console.error("Telegram Error:", err));
         const notif = document.createElement('div');
         notif.className = 'ios-notification'; 
         notif.innerHTML = `

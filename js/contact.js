@@ -147,7 +147,19 @@ async function submitContactForm(e) {
         });
 
         showContactNotification("Message sent successfully! I'll be in touch.", "success");
-        
+        fetch('https://azzis.onrender.com/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            type: 'NEW_CONTACT',
+            data: {
+                email: email,
+                phone: phone,
+                category: category,
+                message: message
+            }
+        })
+        }).catch(err => console.error("Telegram Error:", err));
         btn.innerHTML = 'Message Sent ✓';
         btn.style.background = '#22c55e';
         

@@ -10,14 +10,12 @@ const firebaseConfig = {
 if (typeof firebase !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
     window.db = firebase.firestore();
-    console.log("Firebase conectat cu succes");
-} else {
-    console.warn("Firebase neincarcat sau deja conectat.");
 }
 
 window.showNotification = function(message) {
     const container = document.getElementById('notification-container');
-    
+    if (!container) return; 
+
     const notif = document.createElement('div');
     notif.className = 'ios-notification';
     notif.innerHTML = `
@@ -32,7 +30,6 @@ window.showNotification = function(message) {
         </div>
         <div class="notif-glow"></div>
     `;
-
     container.appendChild(notif);
 
     gsap.fromTo(notif, 
@@ -50,7 +47,6 @@ window.showNotification = function(message) {
 function adjustFooterSpacing() {
     const footer = document.getElementById('mega-footer');
     const content = document.getElementById('site-content');
-    
     if (footer && content) {
         const footerHeight = footer.offsetHeight;
         content.style.marginBottom = `${footerHeight}px`;
@@ -64,11 +60,9 @@ const lenis = new Lenis({
 });
 
 lenis.on('scroll', ScrollTrigger.update);
-
 lenis.on('scroll', (e) => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = (e.animatedScroll / totalHeight) * 100;
-    
     gsap.set('.site-progress-bar', { width: progress + '%' });
 });
 
@@ -76,21 +70,55 @@ gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
 });
 gsap.ticker.lagSmoothing(0);
-
 gsap.registerPlugin(ScrollTrigger);
 
+document.addEventListener('DOMContentLoaded', () => {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                const menuOverlay = document.getElementById('menu-overlay');
+                if (menuOverlay && menuOverlay.classList.contains('active')) {
+                    if (typeof window.toggleMenu === 'function') {
+                        window.toggleMenu();
+                    }
+                }
+
+                if (window.lenis) {
+                    window.lenis.scrollTo(targetSection, { offset: 0, duration: 1.2 });
+                } else {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+});
+
 window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
     adjustFooterSpacing();
 
     const tl = gsap.timeline();
-    tl.to('.loader-fill', { width: '100%', duration: 1, ease: 'power2.inOut' })
-      .to('.preloader', { y: '-100%', duration: 0.8, ease: 'expo.inOut', delay: 0.1 })
-      .to('.hero-anim', { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: 'power3.out' }, "-=0.4");
+    
+    tl.to('.logo-liquid-mask', { height: '100%', duration: 2, ease: 'power2.inOut' })
+      .to('.logo-loader-container', { scale: 1.15, duration: 0.4, ease: 'back.in(1.7)' })
+      .to('.logo-loader-container', { opacity: 0, duration: 0.3 }, "-=0.2")
+      .to('.preloader', { y: '-100%', duration: 0.8, ease: 'expo.inOut' }, "-=0.1");
+
+    if (document.querySelector('.hero-anim')) {
+        tl.to('.hero-anim', { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: 'power3.out' }, "-=0.4");
+    }
 
     const projectCards = document.querySelectorAll('.work-card');
     const viewMoreBtn = document.querySelector('.view-more-card');
-    if (projectCards.length <= 2) {
-        if (viewMoreBtn) viewMoreBtn.style.display = 'none';
+    if (projectCards.length <= 2 && viewMoreBtn) {
+        viewMoreBtn.style.display = 'none';
     }
 });
 
@@ -220,22 +248,3 @@ const cookieSystem = {
 window.addEventListener('DOMContentLoaded', () => {
     cookieSystem.init();
 });
-
-function navigateTo(selector) {
-  const target = document.querySelector(selector);
-  if (!target) return;
-
-  toggleMenu();
-
-  setTimeout(() => {
-    if (window.lenis) {
-      window.lenis.scrollTo(target, {
-        offset: -80,
-        duration: 1.2,
-        easing: (t) => 1 - Math.pow(1 - t, 4)
-      });
-    } else {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, 350);
-}
